@@ -23,7 +23,6 @@ pipeline:
       when:
         status: [ success ]
                 
-
     notify:
       image: plugins/slack
       webhook: ${SLACK_WEBHOOK}    
