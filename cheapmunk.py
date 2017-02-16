@@ -31,19 +31,19 @@ def search_products(name_list):
 	clearMessages()
 	for name in name_list:
 		for angebot in angebote_all:
-			angebot_bezeichung = angebot["name"].encode('utf-8').strip()+ "\n"
+			angebot_bezeichung = angebot["name"]
 
-			if name in angebot_bezeichung and not angebot in angebote_found:
+			if name in angebot_bezeichung.lower() and not angebot in angebote_found:
 				angebote_found.append(angebot)
 
 	for angebot in angebote_found:
-		message = "Angebot:\n\n"
-		message += "Name:   %s\n" % angebot["name"]
-		message += "Preis:     %s\n" % angebot["preis"]
-		message += "Datum:  %s\n\n" % angebot["datum"]
+		message = ""
+		message += "%s\n\n" % angebot["name"]
+		message += "%s\n" % angebot["preis"]
+		message += "%s\n\n" % angebot["datum"]
 		message += "%s" % angebot["link"]
 		outputmsg.append(message)
-		print message.encode('utf-8').strip()+ "\n"
+
 	# Gebe Nachrichten zurück.
 	return outputmsg
 
