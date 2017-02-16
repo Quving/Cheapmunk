@@ -1,11 +1,7 @@
-build_cheapmunk:
+build:
 	docker build -t telegram-cheapmunk . 
 
-run_cheapmunk:
-	docker run -it -d -v $(shell pwd):/cheapmunk --name telegram-cheapmunk telegram-cheapmunk 
+run:
+	docker run -it -d -e BOT_TOKEN=$(BOT_TOKEN_CHEAPMUNK) -v $(shell pwd):/cheapmunk --name telegram-cheapmunk telegram-cheapmunk 
 
-start_cheapmunk:
-	docker start telegram-cheapmunk
 
-stop_cheapmunk:
-	docker stop telegram-cheapmunk

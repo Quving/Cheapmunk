@@ -28,6 +28,7 @@ def getRealAngebote():
 		euro = str(preis_we.text).strip()
 		cent = str(preis_we.attrib['data-cents']).strip()
 		produkt["preis"] = str(euro) + str(cent)
+		
 		# Link zum Produkt
 		sub_url = tree.cssselect("#" + product_id + " a")[0].attrib['href']
 		produkt["link"] = "http://real.de/" + sub_url

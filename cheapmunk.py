@@ -5,6 +5,7 @@
 # This program is dedicated to the public domain under the CC0 license.
 
 import logging
+import os
 
 from telegrambotservice import *
 from jobs import *
@@ -13,6 +14,8 @@ from realangebote import *
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler,  MessageHandler, Filters, Job
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 ###################################################################################################################
 
 def start(bot, update):
@@ -89,7 +92,7 @@ def main():
 	logger = logging.getLogger(__name__)
 
 	# Create the Updater and pass it your bot's token.
-	updater = Updater("291218007:AAEKDywDY5B2liyHQzsS480QlqYEbOpPRgE")
+	updater = Updater(BOT_TOKEN)
 
 	updater.dispatcher.add_handler(CommandHandler('start', start))
 	updater.dispatcher.add_handler(CommandHandler('readme', helpme))
