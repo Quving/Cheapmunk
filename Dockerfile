@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3
 
 RUN pip3 install python-telegram-bot lxml cssselect requests
 ADD . /cheapmunk
