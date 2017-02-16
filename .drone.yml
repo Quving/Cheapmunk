@@ -23,7 +23,7 @@ pipeline:
       when:
         status: [ success ]
                 
-    notify:
+    noti2fy:
       image: plugins/slack
       webhook: ${SLACK_WEBHOOK}    
       channel: drone

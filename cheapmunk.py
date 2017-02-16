@@ -13,6 +13,7 @@ from realangebote import *
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler,  MessageHandler, Filters, Job
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 
+###################################################################################################################
 
 def start(bot, update):
 	setMessageString("Ich suche nach Angeboten! :)")
@@ -21,6 +22,7 @@ def start(bot, update):
 	setMessageString(str(getUsers()))
 	sendMessage(bot, update)
 	
+###################################################################################################################
 
 def search_products(name_list):
 	angebote_all = getRealAngebote()
@@ -28,24 +30,24 @@ def search_products(name_list):
 	outputmsg = []
 	clearMessages()
 	for name in name_list:
-		for angebot in angebote_all:			
-			if name in angebot["name"] and not angebot in angebote_found:
+		for angebot in angebote_all:
+			angebot_bezeichung = angebot["name"].encode('utf-8').strip()+ "\n"
+
+			if name in angebot_bezeichung and not angebot in angebote_found:
 				angebote_found.append(angebot)
 
-	for produkt in angebote_found:
+	for angebot in angebote_found:
 		message = "Angebot:\n\n"
-		message += "Name:   %s\n" % produkt["name"]
-		message += "Preis:     %s\n" % produkt["preis"]
-		message += "Datum:  %s\n\n" % produkt["datum"]
-
-		message += "%s" % produkt["link"]
-
+		message += "Name:   %s\n" % angebot["name"]
+		message += "Preis:     %s\n" % angebot["preis"]
+		message += "Datum:  %s\n\n" % angebot["datum"]
+		message += "%s" % angebot["link"]
 		outputmsg.append(message)
-
-
+		print message.encode('utf-8').strip()+ "\n"
 	# Gebe Nachrichten zurück.
 	return outputmsg
 
+###################################################################################################################
 
 def subscribe_products(bot, update, name_list):
 	for name in name_list:
@@ -63,6 +65,9 @@ def subscribe_products(bot, update, name_list):
 		setMessageString("Du hast nichts abonniert.")
 	sendMessage(bot, update)
 
+
+###################################################################################################################
+
 def unsubscribe_products(bot, update, name_list):
 	for name in name_list:
 		unsubscribe(update.message.from_user["id"], name)
@@ -79,8 +84,14 @@ def unsubscribe_products(bot, update, name_list):
 		setMessageString("Du hast nichts abonniert.")
 	sendMessage(bot, update)
 
+
+###################################################################################################################
+
 def error(bot, update, error):
     logging.warning('Update "%s" caused error "%s"' % (update, error))
+
+
+###################################################################################################################
 
 def message_interpreter(bot, update):
 	msg_splitted = update.message.text.lower().split(" ")	
@@ -95,10 +106,9 @@ def message_interpreter(bot, update):
 		
 		if msglist:
 			setMessageList(msglist)
-			sendMessage(bot, update)
 		else:
 			setMessageString("Gegenwärtig keine Angebote.")
-			sendMessage(bot, update)
+		sendMessage(bot, update)
 
 
 	if cmd == "subscribe":
@@ -122,6 +132,9 @@ def message_interpreter(bot, update):
 		reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard = True, resize_keyboard = True)
 		update.message.reply_text('%i Bitte wähle eine Quelle aus.' % len(messages), reply_markup=reply_markup)
 
+
+###################################################################################################################
+
 def helpme(bot, update):
 	msg = "\"search <produktname>\" - Sucht ein Produkt unter den aktuellen Angeboten.\n\n"
 	msg+= "\"subscribe <produktname>\" - Informiere mich jeden Montag, falls das Produkt im Angebot ist.\n\n"
@@ -129,8 +142,10 @@ def helpme(bot, update):
 	msg+= "Ich hoffe, ich war Dir behilflich! :)"
 	bot.sendMessage(update.message.chat_id, text=msg)
 
-def main():
 
+###################################################################################################################
+
+def main():
 	logging.basicConfig(level=logging.DEBUG, format='%(asctime)s' +
                     '- %(name)s - %(levelname)s - %(message)s')
 	logger = logging.getLogger(__name__)
