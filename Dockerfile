@@ -10,7 +10,7 @@ RUN apt-get install -y python-pip \
 
 ADD . /cheapmunk
 
-WORKDIR /root/Bot
+WORKDIR /cheapmunk
 RUN pip install python-telegram-bot lxml cssselect requests
 
 CMD ["python", "cheapmunk.py"]

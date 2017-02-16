@@ -38,3 +38,64 @@ def getRealAngebote():
 
 ###################################################################################################################
 
+
+def search_products(name_list):
+	angebote_all = getRealAngebote()
+	angebote_found = []
+	outputmsg = []
+	clearMessages()
+	for name in name_list:
+		for angebot in angebote_all:
+			angebot_bezeichung = angebot["name"]
+
+			if name in angebot_bezeichung.lower() and not angebot in angebote_found:
+				angebote_found.append(angebot)
+
+	for angebot in angebote_found:
+		message = ""
+		message += "%s\n\n" % angebot["name"]
+		message += "%s\n" % angebot["preis"]
+		message += "%s\n\n" % angebot["datum"]
+		message += "%s" % angebot["link"]
+		outputmsg.append(message)
+
+	# Gebe Nachrichten zurück.
+	return outputmsg
+
+
+###################################################################################################################
+
+def subscribe_products(bot, update, name_list):
+	for name in name_list:
+		subscribe(update.message.from_user["id"], name)
+
+	# Sende Nachricht
+	abos = getSubscribeList(update.message.from_user["id"])
+	if abos:
+		msg = "Du hast abonniert: \n\n"
+		for abo in abos:
+			msg+=(" - "+ abo+"\n")
+
+		setMessageString(msg)
+	else: 
+		setMessageString("Du hast nichts abonniert.")
+	sendMessage(bot, update)
+
+
+###################################################################################################################
+
+def unsubscribe_products(bot, update, name_list):
+	for name in name_list:
+		unsubscribe(update.message.from_user["id"], name)
+
+	# Sende Nachricht
+	abos = getSubscribeList(update.message.from_user["id"])
+	if abos:
+		msg = "Du hast abonniert: \n\n"
+		for abo in abos:
+			msg+=(" - "+ abo+"\n")
+
+		setMessageString(msg)
+	else: 
+		setMessageString("Du hast nichts abonniert.")
+	sendMessage(bot, update)
