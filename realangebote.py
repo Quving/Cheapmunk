@@ -25,14 +25,15 @@ def getRealAngebote():
 
 		# Produkt Preis
 		preis_we = tree.cssselect("#" + product_id + " div.price")[0]
-		produkt["preis"] = preis_we.text.strip() + str(preis_we.attrib['data-cents']).encode('utf-8').strip()
-
+		euro = str(preis_we.text).strip()
+		cent = str(preis_we.attrib['data-cents']).strip()
+		produkt["preis"] = str(euro) + str(cent)
 		# Link zum Produkt
 		sub_url = tree.cssselect("#" + product_id + " a")[0].attrib['href']
 		produkt["link"] = "http://real.de/" + sub_url
 
 		# Angebotzeitraum
-		produkt["datum"] = str(tree.cssselect("small.text-gray")[0].text).encode('utf-8').strip()	
+		produkt["datum"] = str(tree.cssselect("small.text-gray")[0].text).strip()	
 		produkte.append(produkt)
 	return produkte
 
@@ -53,7 +54,7 @@ def search_products(name_list):
 
 	for angebot in angebote_found:
 		message = ""
-		message += "%s\n\n" % angebot["name"]
+		message += "%s\n\n" % angebot["name"].decode('utf-8')
 		message += "%s\n" % angebot["preis"]
 		message += "%s\n\n" % angebot["datum"]
 		message += "%s" % angebot["link"]
